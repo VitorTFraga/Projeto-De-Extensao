@@ -1,50 +1,47 @@
-import { View, Text, StyleSheet, ImageBackground } from 'react-native'
-import React from 'react'
-import { Link } from 'expo-router'
-import simboloTigreDeJade from "@/assets/images/tigreDeJade.png"
+import { View, Text, StyleSheet, Image } from 'react-native';
+import React from 'react';
+import { Link } from 'expo-router';
 
-const registerPage = () => {
+import tigreDeJade from "@/assets/images/tigreDeJade.png";
+
+const RegisterPage = () => {
   return (
-    <View style={Style.container}>
-      <ImageBackground
-      source={simboloTigreDeJade}
-      style={StyleSheet.image}
-      >
-      <Text style={Style.nameTitle}>coloque seu nome</Text>
-      <Link href={'/Menu'} style={Style.Link} >Menu</Link>
-      </ImageBackground>
+    <View style={styles.container}>
+      <Image source={tigreDeJade} style={styles.image}/>
+      <Text style={styles.text}>Coloque seu nome</Text>
+      <Link href={'/Menu'} style={styles.link}>Criar</Link>
     </View>
-  )
-}
+  );
+};
 
-export default registerPage
+export default RegisterPage;
 
-// codigo do css:
-
-const Style = StyleSheet.create({
-
-  container:{
+const styles = StyleSheet.create({
+  container: {
     flex: 1,
-    backgroundColor: 'white',
-  },
-
-  image:{
-    width: 60,
+    justifyContent: 'center',
     alignItems: 'center',
-    justifyContent:'center',
+    backgroundColor: '#fff',
   },
-
-  nameTitle:{
-    color: 'white',
-    fontSize: 42,
-    fontWeight:'bold',
-    marginbottom: 120,
+  text: {
+    fontSize: 24,
+    color: 'black',
+    marginTop: 30,
+    marginBottom: 30,
   },
-  link:{
-    color: 'white',
-    fontSize: 42,
-    fontWeight:'bold',
-    textDecorationLine: 'underline',
-    padding:4,
+  image: {
+    height: 200,
+    width: 200,
+    justifyContent: 'center',
   },
-})
+  link: {
+    fontSize: 30,
+    color: 'black',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    textDecorationLine: 'underline', 
+    backgroundColor: 'rgba(0,0,0,0.3)',
+    padding: 4,
+  },
+  
+});
