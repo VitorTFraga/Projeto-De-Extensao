@@ -1,47 +1,38 @@
-import { View, Text, StyleSheet, Image } from 'react-native';
-import React from 'react';
-import { Link } from 'expo-router';
+import React, { useEffect, useState } from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import LoginScreen from './(tabs)/loginScreen'; // Caminho de exemplo
+import MenuScreen from './(tabs)/Menu'; // Caminho de exemplo
+import CheckInScreen from './(tabs)/checkIn'; // Caminho de exemplo
 
-import tigreDeJade from "@/assets/images/tigreDeJade.png";
+const Stack = createStackNavigator();
 
-const RegisterPage = () => {
+export default function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      const loggedIn = await checkIfLoggedIn();
+      setIsLoggedIn(loggedIn);
+    };
+
+    checkLoginStatus();
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Image source={tigreDeJade} style={styles.image}/>
-      <Text style={styles.text}>Coloque seu nome</Text>
-      <Link href={'/Menu'} style={styles.link}>Criar</Link>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        {isLoggedIn ? (
+          <Stack.Screen name="Menu" component={MenuScreen} />
+        ) : (
+          <Stack.Screen name="Login" component={LoginScreen} />
+        )}
+        <Stack.Screen name="CheckIn" component={CheckInScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
+}
+
+const checkIfLoggedIn = async () => {
+  return false;  // Forçando tela de login por enquanto
 };
-
-export default RegisterPage;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  text: {
-    fontSize: 24,
-    color: 'black',
-    marginTop: 30,
-    marginBottom: 30,
-  },
-  image: {
-    height: 200,
-    width: 200,
-    justifyContent: 'center',
-  },
-  link: {
-    fontSize: 30,
-    color: 'black',
-    fontWeight: 'bold',
-    textAlign: 'center',
-    textDecorationLine: 'underline', 
-    backgroundColor: 'rgba(0,0,0,0.3)',
-    padding: 4,
-  },
-  
-});

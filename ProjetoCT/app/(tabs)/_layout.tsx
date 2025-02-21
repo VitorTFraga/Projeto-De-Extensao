@@ -29,15 +29,24 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: 'creation',
+          title: 'Login',
+          headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          tabBarStyle: { display: 'none' },
         }}
       />
       <Tabs.Screen
-        name="explorer"
+        name="Menu"
         options={{
           title: 'Menu',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+        }}
+      />
+      <Tabs.Screen
+        name="checkIn"
+        options={{
+          title: 'checkIn', 
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="line.3.horizontal" color={color} />, 
         }}
       />
     </Tabs>
