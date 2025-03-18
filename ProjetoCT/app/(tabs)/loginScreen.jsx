@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, Image,TextInput, Dimensions, TouchableOpacity} from 'react-native';
+import { Alert } from 'react-native';
 import React from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { useRouter } from 'expo-router';
 
 import tigreDeJade from "@/assets/images/tigreDeJade.png";
 
 const RegisterPage = () => {
   const [name, setName] = React.useState('');
-  const navigation = useNavigation();
+  const router = useRouter();
 
   async function getName(){
     try{
@@ -14,9 +15,9 @@ const RegisterPage = () => {
         return alert.alert('atenção','coloque seu nome');
       }
       alert('Nome criado com sucesso!');
-        navigation.navigate('Menu');
+        router.push('/Menu');
     }catch (error){
-      alert('erro ao logar');
+      Alert('erro ao logar');
     }
   };
 
@@ -28,12 +29,10 @@ const RegisterPage = () => {
         value={name}
         onChangeText={setName}/>
       </View>              
-      <View>
-        <Link href="/Menu" asChild>
-          <TouchableOpacity style={styles.button} onPress={getName}>
-            <Text style={styles.textButton}>Entrar</Text>
-          </TouchableOpacity>
-        </Link>
+      <View>        
+        <TouchableOpacity style={styles.button} onPress={getName}>
+          <Text style={styles.textButton}>Entrar</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );

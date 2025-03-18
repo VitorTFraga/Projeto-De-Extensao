@@ -1,14 +1,13 @@
 import { Tabs } from 'expo-router';
 import React from 'react';
 import { Platform } from 'react-native';
-
 import { HapticTab } from '@/components/HapticTab';
 import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 
-export default function TabLayout() {
+export default function Layout() {
   const colorScheme = useColorScheme();
 
   return (
@@ -20,23 +19,22 @@ export default function TabLayout() {
         tabBarBackground: TabBarBackground,
         tabBarStyle: Platform.select({
           ios: {
-            // Use a transparent background on iOS to show the blur effect
             position: 'absolute',
           },
           default: {},
         }),
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
           title: 'Login',
-          headerShown: false,
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-          tabBarStyle: { display: 'none' },
+          tabBarStyle: { display: 'none' }, // Esconde a aba na tela de login
         }}
       />
       <Tabs.Screen
-        name="Menu"
+        name="menu"
         options={{
           title: 'Menu',
           tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
@@ -45,8 +43,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="checkIn"
         options={{
-          title: 'checkIn', 
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="line.3.horizontal" color={color} />, 
+          title: 'Check-in',
+          tabBarIcon: ({ color }) => <IconSymbol size={28} name="line.3.horizontal" color={color} />,
         }}
       />
     </Tabs>

@@ -2,14 +2,13 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
 import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-native-reanimated';
-import { GestureHandlerRootView, GestureDetector, Gesture } from 'react-native-gesture-handler';
-import { useNavigation } from '@react-navigation/native';
+import {GestureDetector, Gesture } from 'react-native-gesture-handler';
+import { useRouter } from 'expo-router';
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
 const buttonWidth = screenWidth * 0.7;
 
-// Lista de treinos organizados por dia da semana
 const trainingSchedule = {
   segunda: [
     { name: 'Kung Fu/Sanda', time: '18:00' },
@@ -37,7 +36,6 @@ const trainingSchedule = {
   ],
 };
 
-// Obtém o dia atual e mapeia para os treinos correspondentes
 const getTodayTrainings = () => {
   const days = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
   const today = new Date().getDay();
@@ -45,7 +43,7 @@ const getTodayTrainings = () => {
 };
 
 const DraggableButtons = () => {
-  const navigation = useNavigation(); // Hook para navegação
+  const router = useRouter();
   const translateX = useSharedValue(0);
   const lastOffset = useSharedValue(0);
 
@@ -72,26 +70,27 @@ const DraggableButtons = () => {
     transform: [{ translateX: translateX.value }],
   }));
 
-  return (
-    <GestureHandlerRootView style={styles.rootContainer}>
-      <View style={styles.container}>
-        <View style={styles.grayBackground} />
+  return (    
+    <View style={styles.container}>
+      <View style={styles.grayBackground} />
 
-        <GestureDetector gesture={panGesture}>
-          <Animated.View style={[styles.buttonContainer, animatedStyle]}>
-            {trainingsToday.map((training, index) => (
-              <TouchableOpacity
-                key={index}
-                style={styles.button}
-                onPress={() => navigation.navigate('checkIn', { treino: training.name, horario: training.time })}
-              >
-                <Text style={styles.textButton}>{`${training.name} - ${training.time}`}</Text>
-              </TouchableOpacity>
-            ))}
-          </Animated.View>
-        </GestureDetector>
-      </View>
-    </GestureHandlerRootView>
+      <GestureDetector gesture={panGesture}>
+        
+        <Animated.View style={[styles.buttonContainer, animatedStyle]}>
+          {trainingsToday.map((training, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.button}
+              onPress={() => {
+                router.push(`/CheckIn?treino=${training.name}&horario=${training.time}`);
+                }}
+            >
+              <Text style={styles.textButton}>{`${training.name} - ${training.time}`}</Text>
+            </TouchableOpacity>
+          ))}
+        </Animated.View>
+      </GestureDetector>
+    </View>
   );
 };
 

@@ -1,18 +1,16 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
+import React, { useEffect } from 'react';
 import { useFonts } from 'expo-font';
-import { createStackNavigator } from '@react-navigation/stack';
+
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
-import { useEffect } from 'react';
-import 'react-native-reanimated';
-
+import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import Menu from './(tabs)/Menu'; // Importe seu componente de menu ou qualquer outra tela que você quer exibir
-import NotFoundScreen from './+not-found'; // Importe a tela de "Página não encontrada"
+import { Tabs } from 'expo-router';
+import { IconSymbol } from '@/components/ui/IconSymbol';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { Slot } from 'expo-router';
 
 SplashScreen.preventAutoHideAsync();
-
-const Stack = createStackNavigator();
 
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -31,20 +29,12 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack.Navigator>
-        <Stack.Screen 
-          name="(tabs)" 
-          component={Menu} 
-          options={{ headerShown: false }} 
-        />
-        {/* Adicione o componente NotFoundScreen como a tela para +not-found */}
-        <Stack.Screen 
-          name="+not-found" 
-          component={NotFoundScreen} 
-        />
-      </Stack.Navigator>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <GestureHandlerRootView style={{ flex: 1 }}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <Slot/>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }
+

@@ -1,38 +1,39 @@
 import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import LoginScreen from './(tabs)/loginScreen'; // Caminho de exemplo
-import MenuScreen from './(tabs)/Menu'; // Caminho de exemplo
-import CheckInScreen from './(tabs)/checkIn'; // Caminho de exemplo
-
-const Stack = createStackNavigator();
+import { Stack } from "expo-router";
+import LoginScreen from './(tabs)/loginScreen'; // Caminho ajustado
+import MenuScreen from './(tabs)/Menu'; // Caminho ajustado
+import CheckInScreen from './(tabs)/CheckIn.jsx'; // Caminho ajustado
+import 'react-native-gesture-handler'; // Necessário para navegação
+import 'react-native-reanimated'; // Garantir que o Reanimated funcione corretamente
+import { Redirect } from 'expo-router';
 
 export default function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const checkLoginStatus = async () => {
       const loggedIn = await checkIfLoggedIn();
       setIsLoggedIn(loggedIn);
+      setLoading(false);
     };
 
     checkLoginStatus();
   }, []);
 
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        {isLoggedIn ? (
-          <Stack.Screen name="Menu" component={MenuScreen} />
-        ) : (
-          <Stack.Screen name="Login" component={LoginScreen} />
-        )}
-        <Stack.Screen name="CheckIn" component={CheckInScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  if (loading) {
+    return null; // Pode adicionar um loader aqui futuramente
+  }
+
+  // Se o usuário não estiver logado, redireciona para a tela de login
+  if (!isLoggedIn) {
+    return <Redirect href="/loginScreen" />;
+  }
+
+  // Se o usuário estiver logado, redireciona para o Menu
+  return <Redirect href="/tabs/Menu" />;
 }
 
 const checkIfLoggedIn = async () => {
-  return false;  // Forçando tela de login por enquanto
+  return false; // Simulação de verificação de login (mudar para lógica real depois)
 };
