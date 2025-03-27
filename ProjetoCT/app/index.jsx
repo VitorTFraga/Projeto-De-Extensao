@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Stack } from "expo-router";
-import LoginScreen from './(tabs)/loginScreen'; // Caminho ajustado
-import MenuScreen from './(tabs)/Menu'; // Caminho ajustado
-import CheckInScreen from './(tabs)/CheckIn.jsx'; // Caminho ajustado
+
 import 'react-native-gesture-handler'; // Necessário para navegação
 import 'react-native-reanimated'; // Garantir que o Reanimated funcione corretamente
 import { Redirect } from 'expo-router';

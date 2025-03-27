@@ -42,6 +42,17 @@ const getTodayTrainings = () => {
   return trainingSchedule[days[today]] || [];
 };
 
+const timeDifferenceInMinutes = (trainTime) => {
+  const now = new Date();
+  const [hours, minutes] = trainTime.split(':').map(Number);
+  const trainDate = new Date();
+  trainDate.setHours(hours);
+  trainDate.setMinutes(minutes);
+  
+  const diff = trainDate - now;
+  return diff / 1000 / 60;
+};
+
 const DraggableButtons = () => {
   const router = useRouter();
   const translateX = useSharedValue(0);
@@ -74,20 +85,34 @@ const DraggableButtons = () => {
     <View style={styles.container}>
       <View style={styles.grayBackground} />
 
+      <Text style={styles.textAboveButtons}>Proximos Treinos:</Text>
+
       <GestureDetector gesture={panGesture}>
         
         <Animated.View style={[styles.buttonContainer, animatedStyle]}>
-          {trainingsToday.map((training, index) => (
-            <TouchableOpacity
-              key={index}
-              style={styles.button}
-              onPress={() => {
-                router.push(`/CheckIn?treino=${training.name}&horario=${training.time}`);
+        {trainingsToday.map((training, index) => {
+            const minutesToTraining = timeDifferenceInMinutes(training.time);
+            const isDisabled = minutesToTraining < 15;
+            const buttonStyle = isDisabled ? styles.buttonDisabled : styles.button;
+            const buttonText = isDisabled
+              ? `${training.name} - ${training.time}`
+              : `${training.name} - ${training.time}`;
+
+            return (
+              <TouchableOpacity
+                key={index}
+                style={buttonStyle}
+                onPress={() => {
+                  if (!isDisabled) {
+                    router.push(`/CheckIn?treino=${training.name}&horario=${training.time}`);
+                  }
                 }}
-            >
-              <Text style={styles.textButton}>{`${training.name} - ${training.time}`}</Text>
-            </TouchableOpacity>
-          ))}
+                disabled={isDisabled}
+              >
+                <Text style={styles.textButton}>{buttonText}</Text>
+              </TouchableOpacity>
+            );
+          })}
         </Animated.View>
       </GestureDetector>
     </View>
@@ -119,7 +144,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     width: buttonWidth * 1.4,
     zIndex: 1,
-    marginTop: 59,
+    marginTop: 3,
   },
   button: {
     width: buttonWidth,
@@ -130,10 +155,25 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginHorizontal: 10,
   },
+  buttonDisabled: {
+    width: buttonWidth,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgb(184, 179, 179)',  
+    padding: 60,
+    borderRadius: 10,
+    marginHorizontal: 10,
+  },
   textButton: {
     color: 'black',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  textAboveButtons: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginRight:150,
+    marginTop: 20,
   },
 });
 

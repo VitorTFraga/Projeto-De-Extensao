@@ -5,10 +5,11 @@ import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { Tabs } from 'expo-router';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { Slot } from 'expo-router';
+import { Slot} from 'expo-router';
+import { Colors } from '@/constants/Colors';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,7 +33,8 @@ export default function RootLayout() {
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
         <Slot/>
-        <StatusBar style="auto" />
+        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'}
+          backgroundColor={Colors[colorScheme ?? 'light'].background} />
       </ThemeProvider>
     </GestureHandlerRootView>
   );

@@ -6,6 +6,7 @@ import { IconSymbol } from '@/components/ui/IconSymbol';
 import TabBarBackground from '@/components/ui/TabBarBackground';
 import { Colors } from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { FontAwesome } from "@expo/vector-icons";
 
 export default function Layout() {
   const colorScheme = useColorScheme();
@@ -17,34 +18,24 @@ export default function Layout() {
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
-        tabBarStyle: Platform.select({
+        tabBarStyle:
+         Platform.select({
           ios: {
             position: 'absolute',
           },
-          default: {},
+          default: {
+            backgroundColor: Colors[colorScheme ?? 'light'].background,
+            borderTopColor: Colors[colorScheme ?? 'light'].background,
+            borderTopWidth: 0,
+          },
         }),
       }}
     >
       <Tabs.Screen
-        name="index"
-        options={{
-          title: 'Login',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
-          tabBarStyle: { display: 'none' }, // Esconde a aba na tela de login
-        }}
-      />
-      <Tabs.Screen
-        name="menu"
+        name="Menu"
         options={{
           title: 'Menu',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="checkIn"
-        options={{
-          title: 'Check-in',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="line.3.horizontal" color={color} />,
+          tabBarIcon: ({ color }) => <FontAwesome size={28} name="bars" color={color} />,
         }}
       />
     </Tabs>

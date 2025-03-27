@@ -1,18 +1,17 @@
 import React from 'react';
 import { View, Text, StyleSheet, Button } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useRouter, useLocalSearchParams } from 'expo-router';
 
 const CheckInScreen = () => {
-  const navigation = useNavigation();
-  const route = useRoute();
-  const { treino, horario } = route.params; // Pegando os dados passados
+  const route = useRouter();
+  const { treino, horario } = useLocalSearchParams(); // Pegando os dados passados
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Check-In</Text>
-      <Text style={styles.info}>Treino: {treino}</Text>
-      <Text style={styles.info}>Horário: {horario}</Text>
-      <Button title="Voltar" onPress={() => navigation.goBack()} />
+      <Text style={styles.info}>Treino: {treino ?? 'Não informado'}</Text>
+      <Text style={styles.info}>Horário: {horario ?? 'Não informado'}</Text>
+      <Button title="Voltar" onPress={() => route.back()} />
     </View>
   );
 };
