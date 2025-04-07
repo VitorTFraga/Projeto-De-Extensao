@@ -1,9 +1,12 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import { View, Text, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, TouchableOpacity, Image } from 'react-native';
 import Animated, { useSharedValue, withSpring, useAnimatedStyle } from 'react-native-reanimated';
 import {GestureDetector, Gesture } from 'react-native-gesture-handler';
 import { useRouter } from 'expo-router';
+import { ScrollView } from 'react-native';
+
+import calendarioCT from "@/assets/images/calendarioCT.png";
 
 const screenWidth = Dimensions.get('window').width;
 const screenHeight = Dimensions.get('window').height;
@@ -39,7 +42,14 @@ const trainingSchedule = {
 const getTodayTrainings = () => {
   const days = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
   const today = new Date().getDay();
-  return trainingSchedule[days[today]] || [];
+  const trainings = [...(trainingSchedule[days[today]] || [])];
+
+  return trainings.sort((a, b) => {
+    const [aHours, aMinutes] = a.time.split(':').map(Number);
+    const [bHours, bMinutes] = b.time.split(':').map(Number);
+
+    return aHours - bHours || aMinutes - bMinutes;
+  });
 };
 
 const timeDifferenceInMinutes = (trainTime) => {
@@ -115,6 +125,23 @@ const DraggableButtons = () => {
           })}
         </Animated.View>
       </GestureDetector>
+      <Text style={styles.calendarText}>Calendário:</Text>
+      <ScrollView style={styles.calendarContainer}>
+        <ScrollView 
+          horizontal 
+          contentContainerStyle={styles.calendarScrollContent}
+          showsHorizontalScrollIndicator={false}
+          contentOffset={{ x: 0, y: 0 }}>
+            
+          <ScrollView 
+            style={styles.calendarScroll} 
+            contentContainerStyle={styles.calendarContent}
+            showsVerticalScrollIndicator={false}
+            contentOffset={{ x: 0, y: 0 }}>
+            <Image source={calendarioCT} style={styles.calendarImg} />
+          </ScrollView>
+        </ScrollView>
+      </ScrollView>   
     </View>
   );
 };
@@ -174,6 +201,37 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginRight:150,
     marginTop: 20,
+  },
+  calendarContainer: {
+    width: screenWidth,
+    height: screenHeight * 0.5, 
+    overflow: 'hidden',
+  },
+
+  calendarScroll: {
+    maxHeight: screenHeight * 0.5,
+  },
+
+  calendarScrollContent: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    flexGrow: 1, // 🔹 EVITA QUE O CONTEÚDO EXPANDA DEMAIS
+    height: 'auto', // 🔹 FORÇA A ALTURA CERTA
+  },
+
+  calendarImg: {
+    width: screenWidth * 1.5,
+    height: screenHeight * 0.54,
+    resizeMode: 'contain',
+    marginBottom: 0, // 🔹 Remove espaços extras
+    paddingBottom: 0,
+  },
+       
+  calendarText: {
+    fontSize: 26,
+    fontWeight: 'bold',
+    marginRight:190,
+    marginTop: 45,
   },
 });
 
