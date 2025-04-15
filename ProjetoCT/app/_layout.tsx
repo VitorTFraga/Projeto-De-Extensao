@@ -10,6 +10,8 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { Slot} from 'expo-router';
 import { Colors } from '@/constants/Colors';
 
+import { UserProvider } from '../contexts/userContext';
+
 
 SplashScreen.preventAutoHideAsync();
 
@@ -31,11 +33,13 @@ export default function RootLayout() {
 
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <Slot/>
-        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'}
-          backgroundColor={Colors[colorScheme ?? 'light'].background} />
-      </ThemeProvider>
+      <UserProvider>
+        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+          <Slot/>
+          <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'}
+            backgroundColor={Colors[colorScheme ?? 'light'].background} />
+        </ThemeProvider>
+      </UserProvider>
     </GestureHandlerRootView>
   );
 }

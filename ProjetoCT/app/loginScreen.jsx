@@ -2,20 +2,23 @@ import { View, Text, StyleSheet, Image,TextInput, Dimensions, TouchableOpacity} 
 import { Alert } from 'react-native';
 import React from 'react';
 import { useRouter } from 'expo-router';
+import { useUser } from '../contexts/userContext';
 
 import tigreDeJade from "@/assets/images/tigreDeJade.png";
 
 const RegisterPage = () => {
   const [name, setName] = React.useState('');
+  const { setUser } = useUser();
   const router = useRouter();
 
   async function getName(){
     try{
       if(!name){
-        return alert.alert('atenção','coloque seu nome');
+        return Alert.alert('atenção','coloque seu nome');
       }
-      alert('Nome criado com sucesso!');
-        router.push('/Menu');
+      setUser(name);
+      Alert.alert('Nome criado com sucesso!');
+      router.push('/Menu');
     }catch (error){
       Alert('erro ao logar');
     }
@@ -84,6 +87,4 @@ const styles = StyleSheet.create({
   textBoxName: {
     fontSize: 15,
   },
-  
-  
 });

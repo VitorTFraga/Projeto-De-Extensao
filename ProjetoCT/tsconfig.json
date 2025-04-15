@@ -13,6 +13,6 @@
     "**/*.jsx",
     ".expo/types/**/*.ts",
     "expo-env.d.ts"
-  ],
+, "contexts/userContext.js"  ],
   "extends": "expo/tsconfig.base"
 }
