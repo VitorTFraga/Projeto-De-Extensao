@@ -215,15 +215,15 @@ const styles = StyleSheet.create({
   calendarScrollContent: {
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
-    flexGrow: 1, // 🔹 EVITA QUE O CONTEÚDO EXPANDA DEMAIS
-    height: 'auto', // 🔹 FORÇA A ALTURA CERTA
+    flexGrow: 1, 
+    height: 'auto',
   },
 
   calendarImg: {
     width: screenWidth * 1.5,
     height: screenHeight * 0.54,
     resizeMode: 'contain',
-    marginBottom: 0, // 🔹 Remove espaços extras
+    marginBottom: 0, 
     paddingBottom: 0,
   },
        

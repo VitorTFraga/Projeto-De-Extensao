@@ -11,6 +11,15 @@ const CheckInScreen = () => {
   const route = useRouter();
   const { treino, horario } = useLocalSearchParams();
 
+const addFakeAlunos = () => {
+    const fakeAlunos = ['Lucas', 'Ana', 'Pedro', 'Maria', 
+      'João', 'Carla', 'Fernanda', 'Ricardo', 'Juliana', 
+      'Gabriel', 'Mariana', 'Thiago'];
+    const newAlunos = fakeAlunos.filter(aluno => !listaAlunos.includes(aluno));
+    const randomAlunos = newAlunos.sort(() => 0.5 - Math.random()).slice(0, 1);
+    setListaAlunos([...listaAlunos, ...randomAlunos]);
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.topBar} >
@@ -38,34 +47,44 @@ const CheckInScreen = () => {
           size={16}
           color="black"
           style={styles.confirmedIcon}/>
-          <Text style={styles.infoTopBarList}>{listaAlunos.length}/12</Text>
+          {listaAlunos.length >= 10 ? (
+            <Text style={styles.infoTopBarListBig}>{listaAlunos.length}/12</Text>
+          ) : (
+            <Text style={styles.infoTopBarList}>{listaAlunos.length}/12</Text>
+          )}
         </View>
       </View>
 
       <View style={styles.scrollContainer}>
-        {listaAlunos.length > 0 ? (
-          <ScrollView contentContainerStyle={styles.scrollContent}>
-            {listaAlunos.map((aluno, index) => (
-              <Text key={index} style={styles.listText}>
-                {aluno}
-              </Text>
-            ))}
-          </ScrollView>
-        ) : (
-          <View style={styles.placeholder}>
-            <Text style={styles.noAlunosText}>Nenhum aluno confirmado ainda</Text>
-          </View>
-        )}
+        <ScrollView contentContainerStyle={styles.scrollContent}>
+          {listaAlunos.length > 0 ? (
+            listaAlunos.map((aluno, index) => (
+              <View key={index} style={styles.alunoBox}>
+                <Text style={styles.alunosName}>{aluno}</Text>
+              </View>
+            ))
+          ) : (
+            <View style={styles.placeholder}>
+              <Text style={styles.noAlunosText}>Nenhum aluno confirmado ainda</Text>
+            </View>
+          )}
+        </ScrollView>
       </View>
 
       <View style={styles.content}>
-        <TouchableOpacity onPress={() => {
+        <TouchableOpacity onPress={() => { 
           if (!listaAlunos.includes(nomeUsuario)) {
             setListaAlunos([...listaAlunos, nomeUsuario]);
+          } else {
+            const novaLista = listaAlunos.filter(aluno => aluno !== nomeUsuario);
+            setListaAlunos(novaLista);
           }
+          /*addFakeAlunos();*/
         }}>
           <View style={styles.checkInButton}>          
-            <Text style={styles.checkInText}>Check-in</Text>
+            <Text style={styles.checkInText}>
+            {listaAlunos.includes(nomeUsuario) ? 'Cancelar Check-in' : 'Check-in'}
+            </Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -102,6 +121,7 @@ const styles = StyleSheet.create({
   },
   
   topBarText: {
+    paddingTop: 30,
     fontSize: 25,
     fontWeight: 'bold',
     color: 'black',
@@ -118,10 +138,12 @@ const styles = StyleSheet.create({
     left: 20,
     top: 55,
     zIndex: 1,
+    padding: 10,
+    paddingTop: 30,
   },
   confirmedIcon: {
-    marginLeft: 18,
-    marginTop: 5,
+    marginLeft: 23,
+    marginTop: 8,
     marginBottom: -3,
   },
   infoTopBar:{
@@ -177,12 +199,21 @@ const styles = StyleSheet.create({
     marginBottom: 8,
   },
   infoTopBarListStyle:{
-    width: '13%',
+    width: '16%',
     alignItems: 'flex-start',
     justifyContent: 'center',
     backgroundColor: '#D47A7A',
     borderRadius: 40,
     paddingHorizontal: 0,
+  },
+  infoTopBarListBig:{
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'black',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginLeft: 5,
+    marginBottom: 7,
   },
   infoTopBarList:{
     fontSize: 18,
@@ -190,7 +221,7 @@ const styles = StyleSheet.create({
     color: 'black',
     alignItems: 'center',
     justifyContent: 'center',
-    marginLeft: 5,
+    marginLeft: 11,
     marginBottom: 7,
   },
   checkInButton: {
@@ -213,18 +244,17 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   scrollContainer: {
+    flex: 1,
     width: '94%',
-    minHeight: 494,
     marginTop: 20,
     marginBottom: 20,
   },
   
   scrollContent: {
     paddingVertical: 10,
-    backgroundColor: '#D3D3D3',
     borderRadius: 10,
-    marginBottom: 4,
-    marginTop: 4,
+    marginBottom: 2,
+    marginTop: 2,
   },
   noAlunosText:{
     fontSize: 24,
@@ -234,11 +264,28 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   placeholder: {
+    flex: 1,
     paddingVertical: 10,
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
-    minHeight: 494,
     backgroundColor: 'white',
+  },
+  alunoBox: {
+    backgroundColor: 'white',
+    padding: 15,
+    marginHorizontal: 10,
+    marginVertical: 2,
+    borderRadius: 8,
+    backgroundColor: '#D3D3D3',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 3,
+    elevation: 2,
+  },  
+  alunosName: {
+    fontSize: 18,
+    color: 'black',
+    fontWeight: '500',
   },
 });
