@@ -11,14 +11,14 @@ const CheckInScreen = () => {
   const route = useRouter();
   const { treino, horario } = useLocalSearchParams();
 
-const addFakeAlunos = () => {
-    const fakeAlunos = ['Lucas', 'Ana', 'Pedro', 'Maria', 
+  /* const addFakeAlunos = () => {
+   const fakeAlunos = ['Lucas', 'Ana', 'Pedro', 'Maria', 
       'João', 'Carla', 'Fernanda', 'Ricardo', 'Juliana', 
       'Gabriel', 'Mariana', 'Thiago'];
     const newAlunos = fakeAlunos.filter(aluno => !listaAlunos.includes(aluno));
     const randomAlunos = newAlunos.sort(() => 0.5 - Math.random()).slice(0, 1);
     setListaAlunos([...listaAlunos, ...randomAlunos]);
-  }
+  }*/
 
   return (
     <View style={styles.container}>
@@ -231,6 +231,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    marginBottom: 20,
   },
   checkInText: {
     fontSize: 24,
