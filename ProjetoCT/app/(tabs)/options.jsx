@@ -1,24 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+import { View, Text, TextInput, Button, StyleSheet, Alert } from 'react-native';
+import { useUser } from '../../contexts/userContext';
 
 const Options = () => {
-    const [userName, setUserName] = useState('');
+    const { nomeUsuario, updateUserName } = useUser();
+    const [tempUserName, setTempUserName] = useState(nomeUsuario);
 
-    useEffect(() =>{
-        const loadName = async () => {
-            const savedName = await AsyncStorage.getItem('userName');
-            if(savedName) {
-                setUserName(savedName);
-            }
-        };
-        loadName();
-    }, []);
+    useEffect(() => {
+        setTempUserName(nomeUsuario);
+    }, [nomeUsuario]);
 
-    const saveName = async () => {
-        await AsyncStorage.setItem('userName', userName);
-        alert('Nome salvo com sucesso!');  
+    const handleSaveName = async () => {
+        
+        await updateUserName(tempUserName);
+        Alert.alert('Sucesso', 'Nome salvo com sucesso!'); 
     };
 
     return(
@@ -26,11 +21,11 @@ const Options = () => {
             <Text style={styles.label}>Novo Nome:</Text>
             <TextInput
             style={styles.input}
-            value={userName}
-            onChangeText={setUserName}
-            placeholder='digite o novo nome'/>
-            <Button title='salvar' onPress={saveName}/>
-        </View>        
+            value={tempUserName} 
+            onChangeText={setTempUserName} 
+            placeholder='Digite o novo nome'/>
+            <Button title='Salvar' onPress={handleSaveName}/>
+        </View>
     );
 };
 
@@ -48,11 +43,11 @@ const styles = StyleSheet.create({
         marginBottom: 10,
     },
     input: {
-        widht: 250,
+        width: 250,
         height: 40,
         borderWidth: 1,
         borderColor: '#ccc',
         padding: 10,
         marginBottom: 20,
     },
-  });
+});

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { act } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
@@ -6,10 +6,19 @@ import { useUser } from '../contexts/userContext';
 
 
 const CheckInScreen = () => {
-  const { nomeUsuario } = useUser();
+  const { nomeUsuario, isLoading } = useUser();
   const [listaAlunos, setListaAlunos] = React.useState([]);
   const route = useRouter();
   const { treino, horario } = useLocalSearchParams();
+
+  if (isLoading) {
+    return(
+      <View style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color="#D47A7A" />
+        <Text style={styles.loadingText}>Carregando...</Text>
+      </View>
+    );
+  }
 
   /* const addFakeAlunos = () => {
    const fakeAlunos = ['Lucas', 'Ana', 'Pedro', 'Maria', 
@@ -109,6 +118,17 @@ const styles = StyleSheet.create({
   info: {
     fontSize: 18,
     marginBottom: 10,
+  },
+   loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white',
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: '#333',
   },
   topBar: {
     width: '100%',

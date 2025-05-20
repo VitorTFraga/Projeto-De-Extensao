@@ -8,7 +8,7 @@ import tigreDeJade from "@/assets/images/tigreDeJade.png";
 
 const RegisterPage = () => {
   const [name, setName] = React.useState('');
-  const { setUser } = useUser();
+  const { updateUserName } = useUser();
   const router = useRouter();
 
   async function getName(){
@@ -16,7 +16,7 @@ const RegisterPage = () => {
       if(!name){
         return Alert.alert('atenção','coloque seu nome');
       }
-      setUser(name);
+      updateUserName(name);
       Alert.alert('Nome criado com sucesso!');
       router.push('/Menu');
     }catch (error){
