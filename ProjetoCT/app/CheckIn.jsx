@@ -1,4 +1,4 @@
-import React, { act } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { FontAwesome } from '@expo/vector-icons';
@@ -6,10 +6,14 @@ import { useUser } from '../contexts/userContext';
 
 
 const CheckInScreen = () => {
-  const { nomeUsuario, isLoading } = useUser();
-  const [listaAlunos, setListaAlunos] = React.useState([]);
+  const { userName, isLoading } = useUser();
+  const [listaAlunos, setListaAlunos] = useState([]);
   const route = useRouter();
   const { treino, horario } = useLocalSearchParams();
+
+  useEffect(() => {
+    console.log("CHECKIN SCREEN - RENDER. isLoading:", isLoading, "userName (do contexto):", userName);
+  }, [isLoading, userName]);
 
   if (isLoading) {
     return(
@@ -82,17 +86,17 @@ const CheckInScreen = () => {
 
       <View style={styles.content}>
         <TouchableOpacity onPress={() => { 
-          if (!listaAlunos.includes(nomeUsuario)) {
-            setListaAlunos([...listaAlunos, nomeUsuario]);
+          if (!listaAlunos.includes(userName)) {
+            setListaAlunos([...listaAlunos, userName]);
           } else {
-            const novaLista = listaAlunos.filter(aluno => aluno !== nomeUsuario);
+            const novaLista = listaAlunos.filter(aluno => aluno !== userName);
             setListaAlunos(novaLista);
           }
           /*addFakeAlunos();*/
         }}>
           <View style={styles.checkInButton}>          
             <Text style={styles.checkInText}>
-            {listaAlunos.includes(nomeUsuario) ? 'Cancelar Check-in' : 'Check-in'}
+            {listaAlunos.includes(userName) ? 'Cancelar Check-in' : 'Check-in'}
             </Text>
           </View>
         </TouchableOpacity>

@@ -1,6 +1,6 @@
 import { View, Text, StyleSheet, Image,TextInput, Dimensions, TouchableOpacity} from 'react-native';
 import { Alert } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { useUser } from '../contexts/userContext';
 
@@ -8,21 +8,39 @@ import tigreDeJade from "@/assets/images/tigreDeJade.png";
 
 const RegisterPage = () => {
   const [name, setName] = React.useState('');
-  const { updateUserName } = useUser();
+  const {userName, updateUserName, isLoading} = useUser();
   const router = useRouter();
+
+  useEffect(() => {
+    console.log("LOGIN SCREEN - RENDER. isLoading:", isLoading, "userName (do contexto):", userName);
+    if(!isLoading && userName !== ''){
+      console.log("LOGIN SCREEN - Redirecionando para /Menu (userName preenchido)");
+      router.replace('/Menu');
+    }
+  },[isLoading, userName, router]);
 
   async function getName(){
     try{
-      if(!name){
+      if(!name.trim()){
         return Alert.alert('atenção','coloque seu nome');
       }
-      updateUserName(name);
+      console.log("LOGIN SCREEN - Tentando salvar nome:", name);
+      await updateUserName(name);
       Alert.alert('Nome criado com sucesso!');
-      router.push('/Menu');
+      router.replace('/Menu');
     }catch (error){
-      Alert('erro ao logar');
+      console.error("Erro ao fazer login:", error);
+      Alert.alert('erro','erro ao logar');
     }
   };
+
+  if(isLoading){
+    return (
+      <View style={styles.loadingContainer}>
+        <Text style={styles.loadingText}>Carregando preferências...</Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>
@@ -49,6 +67,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff',
+  },
+  loadingText: {
+    fontSize: 18,
+    color: '#333',
   },
   text: {
     fontSize: 17,

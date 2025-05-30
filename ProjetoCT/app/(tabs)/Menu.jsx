@@ -179,8 +179,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'rgb(212, 122, 122)',
     padding: 60,
-    borderRadius: 10,
+    borderRadius: 20,
     marginHorizontal: 10,
+    boxShadow: '6px 8px 6px rgba(0, 0, 0, 0.1)',
   },
   buttonDisabled: {
     width: buttonWidth,
@@ -231,7 +232,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     fontWeight: 'bold',
     marginRight:190,
-    marginTop: 45,
+    marginTop: 70,
   },
 });
 
