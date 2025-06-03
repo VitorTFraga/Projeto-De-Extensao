@@ -7,8 +7,7 @@
 - [📚 Sobre o Projeto](#sobre-o-projeto)
 - [✨ Funcionalidades](#funcionalidades)
 - [🛠️ Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [📧 Contato](#contato)
-
+- [🪪 Contatos](#contatos)
 ---
 
 ## 🎯 Objetivo do Projeto
@@ -48,7 +47,7 @@ Este projeto foi construído com as seguintes **tecnologias principais**:
 
 ## 🪪 Contatos
 
-Vitor Táboas Fraga - [LINKEDIN](www.linkedin.com/in/vitor-táboas-fraga-002651212) - vitortaboasfraga@gmail.com
+Vitor Táboas Fraga - [LINKEDIN](https://www.linkedin.com/in/vitor-táboas-fraga-002651212) - vitortaboasfraga@gmail.com
 
 Link do Projeto: [Projeto de Extensão](https://github.com/VitorTFraga/Projeto-De-Extensao)
 
